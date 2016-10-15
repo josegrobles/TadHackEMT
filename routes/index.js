@@ -62,4 +62,24 @@ router.post('/getParadaName',function(req,res,next){
 });
   })
 })
+
+router.post('/getFavorites',function(req,res,next){
+  async.parallel([function(callback){
+      db.getFavorites(req.body.phone,callback)
+  }],function(err,final){
+    string = "Tus paradas favoritas son "
+    for(var i=0;i<final[0].length;i++){
+      string += i+1 + " " + final[0][i] + " \n "
+    }
+    string += "Selecciona una de ellas marcando el número más campanilla"
+    res.end(JSON.stringify({string: string}))  })
+})
+
+router.post('/addFavorites',function(req,res,next){
+  async.parallel([function(callback){
+    db.setFavorites(req.body.phone,req.body.id,req.body.index,callback)
+  }],function(err,args){
+    res.end("ok")
+  })
+})
 module.exports = router;
