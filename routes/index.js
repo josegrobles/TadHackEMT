@@ -92,7 +92,7 @@ router.post('/getFavorites',function(req,res,next){
 router.post('/addFavorites',function(req,res,next){
   request.post({url:"http://localhost:3423/getParadaInfo",form:{id:req.body.id}},function(err,httpResponse,body){
     async.parallel([function(callback){
-      db.setFavorites(req.body.phone,JSON.stringify({idStop:body.id,name:body.name})),req.body.index,callback)
+      db.setFavorites(req.body.phone,JSON.stringify({idStop:body.id,name:body.name}),req.body.index,callback)
     }],function(err,args){
       res.end("ok")
     })
