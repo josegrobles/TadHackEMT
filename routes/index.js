@@ -11,12 +11,16 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/getParada',function(req,res,next){
-  if(req.body.internal != "true") db.saveLast(req.body.phone,req.body.id)
   request.post({url:"https://openbus.emtmadrid.es:9443/emt-proxy-server/last/geo/GetArriveStop.php", form:{idClient:"***REMOVED***",passKey:"***REMOVED***",idStop: req.body.id}},function(err,httpResponse,body){
     var string = ""
     console.log(body)
     var arrives = JSON.parse(body).arrives
     for(var i=0;i<arrives.length;i++){
+      if(i == 0){
+        request.post({url:"http://localhost:3423/getParadaName",form:{id:req.body.id,lineId: arrives[i].lineId}},function(err,httpResponse,body){
+          if(req.body.internal != "true") db.saveLast(req.body.phone,req.body.id + " " + body)
+        })
+      }
       if(arrives[i].busTimeLeft != 999999)
         string += `La linea ${arrives[i].lineId} con destino ${arrives[i].destination} va a llegar en ${Math.round(arrives[i].busTimeLeft/60)} minutos \n`
       else string += `La linea ${arrives[i].lineId} con destino ${arrives[i].destination} va a llegar en más de 20 minutos \n`
@@ -51,7 +55,7 @@ router.post('/getFromLast',function(req,res,next){
 })
 
 router.post('/getParadaName',function(req,res,next){
-  request.post({url: "https://servicios.emtmadrid.es:8443/servicemedia/servicemedia.asmx/GetEstimatesIncident", form:{idClient:"***REMOVED***",passKey:"***REMOVED***",idStop:"1693",IdLine:"82",Text_StopRequired_YN:"Y",Audio_StopRequired_YN:"N",Text_EstimationsRequired_YN:"N",Audio_EstimationsRequired_YN:"N",Text_IncidencesRequired_YN:"N",Audio_IncidencesRequired_YN:"N",DateTime_Referenced_Incidencies_YYYYMMDD:"20161010",statistics: "",cultureInfo:""}},function(err,httpResponse,body){
+  request.post({url: "https://servicios.emtmadrid.es:8443/servicemedia/servicemedia.asmx/GetEstimatesIncident", form:{idClient:"***REMOVED***",passKey:"***REMOVED***",idStop:req.body.id,IdLine:req.body.lineId,Text_StopRequired_YN:"Y",Audio_StopRequired_YN:"N",Text_EstimationsRequired_YN:"N",Audio_EstimationsRequired_YN:"N",Text_IncidencesRequired_YN:"N",Audio_IncidencesRequired_YN:"N",DateTime_Referenced_Incidencies_YYYYMMDD:"20161010",statistics: "",cultureInfo:""}},function(err,httpResponse,body){
     parseString(body, function (err, result) {
       res.end(JSON.stringify(result.Result.Stop[0].Description[0]))
 });
