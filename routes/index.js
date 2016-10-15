@@ -99,6 +99,7 @@ router.post('/addFavorites',function(req,res,next){
     async.parallel([function(callback){
       db.getFromFavorites(req.body.phone,req.body.index-1,callback)
     }],function(err,final){
+      console.log(final[0])
       request.post({url: "http://localhost:3423/getParada",form:{phone:req.body.phone,id:JSON.parse(final[0]).idStop,internal:true}},function(err,httpResponse,body){
         console.log(body)
         res.end(body)
