@@ -29,14 +29,12 @@ exports.setFavorites = function(phone,id,index,callback){
   client.llen(phone+":favorites",function(err,res1){
     if(res1 < index){
       client.rpush(phone+":favorites",JSON.stringify({idStop:id.idStop,name:id.name}),function(err){
-        if(err) callback(err)
-        else callback(null)
+        if(err) console.log(err)
       })
     }
     else {
       client.lset(phone+":favorites",index,JSON.stringify({idStop:id.idStop,name:id.name}),function(err){
-        if(err) callback(err)
-        else callback(null)
+        if(err) console.log(err)
       })
     }
   })
