@@ -62,9 +62,7 @@ router.post('/getFromLast',function(req,res,next){
   async.parallel([function(callback){
     db.getFromLast(req.body.phone,req.body.index-1,callback)
   }],function(err,final){
-
     request.post({url: "http://localhost:3423/getParada",form:{phone:req.body.phone,id:JSON.parse(final[0]).idStop,internal:true}},function(err,httpResponse,body){
-      console.log(body)
       res.end(body)
     })
   })
@@ -84,7 +82,7 @@ router.post('/getFavorites',function(req,res,next){
   }],function(err,final){
     string = "Tus paradas favoritas son "
     for(var i=0;i<final[0].length;i++){
-      string += i+1 + " " + final[0][i] + " \n "
+      string += i+1 + " " + JSON.parse(final[0][i]).idStop + " " + JSON.parse(final[0][i]).name + " \n "
     }
     string += "Selecciona una de ellas marcando el número más campanilla"
     res.end(JSON.stringify({string: string}))  })
@@ -103,7 +101,7 @@ router.post('/addFavorites',function(req,res,next){
     async.parallel([function(callback){
       db.getFromFavorites(req.body.phone,req.body.index-1,callback)
     }],function(err,final){
-      request.post({url: "http://localhost:3423/getParada",form:{phone:req.body.phone,id:final[0],internal:true}},function(err,httpResponse,body){
+      request.post({url: "http://localhost:3423/getParada",form:{phone:req.body.phone,id:JSON.parse(final[0]).idStop,internal:true}},function(err,httpResponse,body){
         console.log(body)
         res.end(body)
       })
