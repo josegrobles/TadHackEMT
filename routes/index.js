@@ -51,7 +51,7 @@ router.post('/getLast',function(req,res,next){
   }],function(err,final){
     string = "Tus últimas 5 paradas son "
     for(var i=0;i<final[0].length;i++){
-      string += i+1 + " " + final[0][i] + " \n "
+      string += i+1 + " " + JSON.parse(final[0][i].idStop + " " + final[0][i].name) + " \n "
     }
     string += "Selecciona una de ellas marcando el número más campanilla"
     res.end(JSON.stringify({string: string}))
