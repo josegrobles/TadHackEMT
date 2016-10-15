@@ -31,6 +31,20 @@ router.post('/getParada',function(req,res,next){
   })
 })
 
+router.post('/getParadaInfo',function(req,res,next){
+  request.post({url:"https://openbus.emtmadrid.es:9443/emt-proxy-server/last/geo/GetArriveStop.php", form:{idClient:idClient,passKey:passKey,idStop: req.body.id}},function(err,httpResponse,body){
+    var arrives = JSON.parse(body).arrives
+    for(var i=0;i<arrives.length;i++){
+      if(i == 0){
+        request.post({url:"http://localhost:3423/getParadaName",form:{id:req.body.id,lineId: arrives[i].lineId}},function(err,httpResponse,body){
+            res.end(req.body.id + " " + body)
+        })
+      }    }
+    res.end(JSON.stringify({string:string}))
+  })
+
+})
+
 router.post('/getLast',function(req,res,next){
   async.parallel([function(callback){
     db.getLast(req.body.phone,callback)
@@ -76,10 +90,15 @@ router.post('/getFavorites',function(req,res,next){
 })
 
 router.post('/addFavorites',function(req,res,next){
-  async.parallel([function(callback){
-    db.setFavorites(req.body.phone,req.body.id,req.body.index,callback)
-  }],function(err,args){
-    res.end("ok")
+  request.post({url:"http://localhost:3423/getParadaInfo",form:{id:req.body.id}},function(err,httpResponse,body){
+    async.parallel([function(callback){
+      db.setFavorites(req.body.phone,body,req.body.index,callback)
+    }],function(err,args){
+      res.end("ok")
+    })
+
   })
+
+
 })
 module.exports = router;
