@@ -4,14 +4,15 @@ var async = require('async')
 var db = require('../controllers/redis.js')
 var request = require('request')
 var parseString = require('xml2js').parseString;
-
+var idClient = "***REMOVED***"
+var passKey = "***REMOVED***"
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
 router.post('/getParada',function(req,res,next){
-  request.post({url:"https://openbus.emtmadrid.es:9443/emt-proxy-server/last/geo/GetArriveStop.php", form:{idClient:"***REMOVED***",passKey:"***REMOVED***",idStop: req.body.id}},function(err,httpResponse,body){
+  request.post({url:"https://openbus.emtmadrid.es:9443/emt-proxy-server/last/geo/GetArriveStop.php", form:{idClient:idClient,passKey:passKey,idStop: req.body.id}},function(err,httpResponse,body){
     var string = ""
     console.log(body)
     var arrives = JSON.parse(body).arrives
@@ -55,7 +56,7 @@ router.post('/getFromLast',function(req,res,next){
 })
 
 router.post('/getParadaName',function(req,res,next){
-  request.post({url: "https://servicios.emtmadrid.es:8443/servicemedia/servicemedia.asmx/GetEstimatesIncident", form:{idClient:"***REMOVED***",passKey:"***REMOVED***",idStop:req.body.id,IdLine:req.body.lineId,Text_StopRequired_YN:"Y",Audio_StopRequired_YN:"N",Text_EstimationsRequired_YN:"N",Audio_EstimationsRequired_YN:"N",Text_IncidencesRequired_YN:"N",Audio_IncidencesRequired_YN:"N",DateTime_Referenced_Incidencies_YYYYMMDD:"20161010",statistics: "",cultureInfo:""}},function(err,httpResponse,body){
+  request.post({url: "https://servicios.emtmadrid.es:8443/servicemedia/servicemedia.asmx/GetEstimatesIncident", form:{idClient:idClient,passKey:passKey,idStop:req.body.id,IdLine:req.body.lineId,Text_StopRequired_YN:"Y",Audio_StopRequired_YN:"N",Text_EstimationsRequired_YN:"N",Audio_EstimationsRequired_YN:"N",Text_IncidencesRequired_YN:"N",Audio_IncidencesRequired_YN:"N",DateTime_Referenced_Incidencies_YYYYMMDD:"20161010",statistics: "",cultureInfo:""}},function(err,httpResponse,body){
     parseString(body, function (err, result) {
       res.end(JSON.stringify(result.Result.Stop[0].Description[0]))
 });
