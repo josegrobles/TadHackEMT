@@ -23,7 +23,7 @@ exports.getFavorites = function(phone,callback){
 }
 
 exports.setFavorites = function(phone,id,index,callback){
-  console.log(id)
+  var id = JSON.parse(id)
   client.llen(phone+":favorites",function(err,res1){
     if(res1 < index){
       client.rpush(phone+":favorites",JSON.stringify({idStop:id.idStop,name:id.name}),function(err){
