@@ -93,6 +93,7 @@ router.post('/addFavorites',function(req,res,next){
     db.setFavorites(req.body.phone,body,req.body.index)
     res.end("ok")
   })
+})
 
   router.post('/getFromFavorites',function(req,res,next){
     async.parallel([function(callback){
@@ -104,6 +105,4 @@ router.post('/addFavorites',function(req,res,next){
       })
     })
   })
-
-})
 module.exports = router;
