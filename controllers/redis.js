@@ -26,13 +26,13 @@ exports.setFavorites = function(phone,id,index,callback){
   console.log(id)
   client.llen(phone+":favorites",function(err,res1){
     if(res1 < index){
-      client.rpush(phone+":favorites",id,function(err){
+      client.rpush(phone+":favorites",JSON.stringify({idStop:id.idStop,name:id.name}),function(err){
         if(err) callback(err)
         else callback(null)
       })
     }
     else {
-      client.lset(phone+":favorites",index,id,function(err){
+      client.lset(phone+":favorites",index,JSON.stringify({idStop:id.idStop,name:id.name}),function(err){
         if(err) callback(err)
         else callback(null)
       })
