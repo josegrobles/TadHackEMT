@@ -11,7 +11,7 @@ exports.getLast = function(phone,callback){
 }
 
 exports.getFromLast = function(phone,index,callback){
-  client.lindex(phone,index,function(err,ans){
+  client.lindex(phone+":last",index,function(err,ans){
     callback(null,ans)
   })
 }
