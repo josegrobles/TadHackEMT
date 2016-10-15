@@ -3,6 +3,8 @@ var router = express.Router();
 var async = require('async')
 var db = require('../controllers/redis.js')
 var request = require('request')
+var parseString = require('xml2js').parseString;
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -50,6 +52,9 @@ router.post('/getFromLast',function(req,res,next){
 
 router.post('/getParadaName',function(req,res,next){
   request.post({url: "https://servicios.emtmadrid.es:8443/servicemedia/servicemedia.asmx/GetEstimatesIncident", form:{idClient:"***REMOVED***",passKey:"***REMOVED***",idStop:"1693",IdLine:"82",Text_StopRequired_YN:"Y",Audio_StopRequired_YN:"N",Text_EstimationsRequired_YN:"N",Audio_EstimationsRequired_YN:"N",Text_IncidencesRequired_YN:"N",Audio_IncidencesRequired_YN:"N",DateTime_Referenced_Incidencies_YYYYMMDD:"20161010",statistics: "",cultureInfo:""}},function(err,httpResponse,body){
+    parseString(body, function (err, result) {
+    console.dir(result);
+});
     res.end(body)
   })
 })
