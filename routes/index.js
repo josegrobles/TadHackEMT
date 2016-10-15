@@ -91,6 +91,7 @@ router.post('/getFavorites',function(req,res,next){
 router.post('/addFavorites',function(req,res,next){
   request.post({url:"http://localhost:3423/getParadaInfo",form:{id:req.body.id}},function(err,httpResponse,body){
     db.setFavorites(req.body.phone,body,req.body.index)
+    res.end("ok")
   })
 
   router.post('/getFromFavorites',function(req,res,next){
