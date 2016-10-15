@@ -41,7 +41,7 @@ exports.setFavorites = function(phone,id,index,callback){
 }
 
 exports.getFromFavorites = function(phone,index,callback){
-  client.lindex(phone,index,function(err,ans){
+  client.lindex(phone+":favorites",index,function(err,ans){
     callback(null,ans)
   })
 }
