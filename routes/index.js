@@ -62,11 +62,7 @@ router.post('/getFromLast',function(req,res,next){
   async.parallel([function(callback){
     db.getFromLast(req.body.phone,req.body.index-1,callback)
   }],function(err,final){
-    console.log(JSON.parse(final[0]))
-    request.post({url: "http://localhost:3423/getParada",form:{phone:req.body.phone,id:final[0],internal:true}},function(err,httpResponse,body){
-      console.log(body)
-      res.end(body)
-    })
+    console.log(JSON.parse(final))
   })
 })
 
