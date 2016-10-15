@@ -39,8 +39,8 @@ router.post('/getParadaInfo',function(req,res,next){
         request.post({url:"http://localhost:3423/getParadaName",form:{id:req.body.id,lineId: arrives[i].lineId}},function(err,httpResponse,body){
             res.end(req.body.id + " " + body)
         })
-      }    }
-    res.end(JSON.stringify({string:string}))
+      }
+    }
   })
 
 })
