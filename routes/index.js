@@ -62,7 +62,7 @@ router.post('/getFromLast',function(req,res,next){
   async.parallel([function(callback){
     db.getFromLast(req.body.phone,req.body.index-1,callback)
   }],function(err,final){
-    console.log(JSON.parse(final))
+    console.log(final)
   })
 })
 
