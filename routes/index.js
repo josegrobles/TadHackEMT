@@ -53,7 +53,7 @@ router.post('/getFromLast',function(req,res,next){
 router.post('/getParadaName',function(req,res,next){
   request.post({url: "https://servicios.emtmadrid.es:8443/servicemedia/servicemedia.asmx/GetEstimatesIncident", form:{idClient:"***REMOVED***",passKey:"***REMOVED***",idStop:"1693",IdLine:"82",Text_StopRequired_YN:"Y",Audio_StopRequired_YN:"N",Text_EstimationsRequired_YN:"N",Audio_EstimationsRequired_YN:"N",Text_IncidencesRequired_YN:"N",Audio_IncidencesRequired_YN:"N",DateTime_Referenced_Incidencies_YYYYMMDD:"20161010",statistics: "",cultureInfo:""}},function(err,httpResponse,body){
     parseString(body, function (err, result) {
-      res.end(JSON.stringify(result.Result.Stop))
+      res.end(JSON.stringify(result.Result.Stop[0].Description[0]))
 });
   })
 })
