@@ -19,7 +19,7 @@ router.post('/getParada',function(req,res,next){
     for(var i=0;i<arrives.length;i++){
       if(i == 0){
         request.post({url:"http://localhost:3423/getParadaName",form:{id:req.body.id,lineId: arrives[i].lineId}},function(err,httpResponse,body){
-          if(req.body.internal != "true") db.saveLast(req.body.phone,req.body.id + " " + body)
+          if(req.body.internal != "true") db.saveLast(req.body.phone,JSON.stringify({idStop:req.body.id,name:body}))
         })
       }
       if(arrives[i].busTimeLeft != 999999)
@@ -37,7 +37,7 @@ router.post('/getParadaInfo',function(req,res,next){
     for(var i=0;i<arrives.length;i++){
       if(i == 0){
         request.post({url:"http://localhost:3423/getParadaName",form:{id:req.body.id,lineId: arrives[i].lineId}},function(err,httpResponse,body){
-            res.end(req.body.id + " " + body)
+            res.end(JSON.stringify({idStop:req.body.id,name:body}))
         })
       }
     }
@@ -92,7 +92,7 @@ router.post('/getFavorites',function(req,res,next){
 router.post('/addFavorites',function(req,res,next){
   request.post({url:"http://localhost:3423/getParadaInfo",form:{id:req.body.id}},function(err,httpResponse,body){
     async.parallel([function(callback){
-      db.setFavorites(req.body.phone,body,req.body.index,callback)
+      db.setFavorites(req.body.phone,JSON.stringify({idStop:body.id,name:body.name})),req.body.index,callback)
     }],function(err,args){
       res.end("ok")
     })
