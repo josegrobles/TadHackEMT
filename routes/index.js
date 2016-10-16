@@ -23,8 +23,8 @@ router.post('/getParada',function(req,res,next){
         })
       }
       if(arrives[i].busTimeLeft != 999999)
-        string += `La linea ${arrives[i].lineId} con destino ${arrives[i].destination} va a llegar en ${Math.round(arrives[i].busTimeLeft/60)} minutos \n`
-      else string += `La linea ${arrives[i].lineId} con destino ${arrives[i].destination} va a llegar en más de 20 minutos \n`
+        string += `Line ${arrives[i].lineId} with final destination ${arrives[i].destination} will arrive in ${Math.round(arrives[i].busTimeLeft/60)} minutes \n`
+      else string += `Line ${arrives[i].lineId} with final destination ${arrives[i].destination} will arrive in more than 20 minutes \n`
 
     }
     res.end(JSON.stringify({string:string}))
@@ -49,11 +49,11 @@ router.post('/getLast',function(req,res,next){
   async.parallel([function(callback){
     db.getLast(req.body.phone,callback)
   }],function(err,final){
-    string = "Tus últimas 5 paradas son "
+    string = "Your last 5 bus stops are "
     for(var i=0;i<final[0].length;i++){
       string += i+1 + " " + JSON.parse(final[0][i]).idStop + " " + JSON.parse(final[0][i]).name + " \n "
     }
-    string += "Selecciona una de ellas marcando el número más campanilla"
+    string += "Choose one of them and then press *"
     res.end(JSON.stringify({string: string}))
   })
 })
@@ -80,11 +80,11 @@ router.post('/getFavorites',function(req,res,next){
   async.parallel([function(callback){
       db.getFavorites(req.body.phone,callback)
   }],function(err,final){
-    string = "Tus paradas favoritas son "
+    string = "Your favorite bus stops are "
     for(var i=0;i<final[0].length;i++){
       string += i+1 + " " + JSON.parse(final[0][i]).idStop + " " + JSON.parse(final[0][i]).name + " \n "
     }
-    string += "Selecciona una de ellas marcando el número más campanilla"
+    string += "Choose one of them and then press *"
     res.end(JSON.stringify({string: string}))  })
 })
 
