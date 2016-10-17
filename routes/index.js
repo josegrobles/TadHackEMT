@@ -5,7 +5,7 @@ var db = require('../controllers/redis.js')
 var request = require('request')
 var parseString = require('xml2js').parseString;
 var idClient = "***REMOVED***"
-var passKey = "***REMOVED***"
+var passKey = "948CF160-0F61-4B9F-990B-D5863CB6F638"
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
